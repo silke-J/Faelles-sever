@@ -8,7 +8,7 @@ const userSchema = new Schema({
     {
       questionId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Quiz",
+        ref: "quiz",
         required: true,
       },
       chosenAnswer: { type: String, required: true },
