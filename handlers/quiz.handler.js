@@ -11,21 +11,13 @@ export const createQuiz = async (body) => {
   }
 };
 
-// Get quiz by id
+// Get Quiz by id
 export const getQuizById = async (id) => {
   try {
-    const quiz = await quizModel
-      .findById(id)
-      .populate("user", "answers correctAnswersCount");
+    const quiz = await quizModel.findById(id);
     return quiz;
   } catch (error) {
     console.error("Der skete en fejl", error);
     throw new Error("Der skete en fejl:", error);
   }
 };
-
-/* Forståelse af populate() */
-/* populate() er en method fra Mongoose som gør at man kan slå data op på tværs af scripts.
-  F.eks. hvis et adItem har et user-felt (ObjectId), kan man bruge .populate("user") 
-  til automatisk at hente brugerens navn, email, address, osv. i samme query,
-  uden at man skal lave flere databasekald. */

@@ -8,8 +8,6 @@ const quizSchema = new Schema({
   correctAnswer: { type: String, required: true },
   nextHint: { type: String },
   image: { type: String },
-
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
 export default mongoose.models.quiz || mongoose.model("quiz", quizSchema);
