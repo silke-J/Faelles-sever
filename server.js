@@ -7,7 +7,6 @@ import cors from "cors";
 import dbConnect from "./util/dbconnect.js";
 
 import quizRoute from "./routes/quiz.routes.js";
-
 // MongoDB
 dbConnect();
 
@@ -23,6 +22,7 @@ expressServer.use(express.json());
 // Routes
 expressServer.use(quizRoute);
 
+//Starter serveren
 expressServer.listen(3000, () => {
   console.log("Serveren kører på http://localhost:3000");
 });
