@@ -1,7 +1,18 @@
 import userModel from "../models/user.model.js";
 import quizModel from "../models/quiz.model.js";
 
-// Create user
+// Get User by id
+export const getUserById = async (id) => {
+  try {
+    const user = userModel.findById(id).populate("answers.questionId");
+    return user;
+  } catch (error) {
+    console.error("Der skete en fejl", error);
+    throw new Error("Der skete en fejl:", error);
+  }
+};
+
+// Create User
 export const createUser = async (body) => {
   try {
     const user = await userModel.create(body);
@@ -12,49 +23,30 @@ export const createUser = async (body) => {
   }
 };
 
-// Tilføj svar på et quiz-spørgsmå
-export const addAnswer = async (req, res) => {
+// Answered quiz-question
+export const answerQuizQuestion = async (userId, questionId, chosenAnswer) => {
   try {
-    const { userId } = req.params;
-    const { questionId, chosenAnswer } = req.body;
+    const quiz = await quizModel.findById(questionId);
+    if (!quiz) throw new Error("Quiz ikke fundet");
 
-    const quizQuestion = await Quiz.findById(questionId);
-    if (!quizQuestion) {
-      return res.status(404).json({ message: "Spørgsmål ikke fundet" });
+    const correct = quiz.correctAnswer === chosenAnswer;
+
+    const user = await userModel.findById(userId);
+    if (!user) throw new Error("User ikke fundet");
+
+    user.answers.push({
+      questionId,
+      chosenAnswer,
+      correct,
+    });
+
+    if (correct) {
+      user.correctAnswerCount += 1;
     }
 
-    const isCorrect = quizQuestion.correctAnswer === chosenAnswer;
-
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        $push: {
-          answers: {
-            questionId,
-            chosenAnswer,
-            correct: isCorrect,
-          },
-        },
-        $inc: { correctAnswersCount: isCorrect ? 1 : 0 },
-      },
-      { new: true }
-    ).populate("answers.questionId"); // populater quiz spørgsmål
-
-    res.status(200).json(updatedUser);
+    await user.save();
   } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Hent en bruger med quiz-svar
-export const getUserWithAnswers = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const user = await User.findById(userId).populate("answers.questionId");
-    if (!user) return res.status(404).json({ message: "Bruger ikke fundet" });
-
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Fejl i answerQuizQuestion", error);
+    throw error;
   }
 };
