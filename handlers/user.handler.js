@@ -1,5 +1,16 @@
-import User from "../models/User.model.js";
-import Quiz from "../models/Quiz.model.js";
+import userModel from "../models/user.model.js";
+import quizModel from "../models/quiz.model.js";
+
+// Create user
+export const createUser = async (body) => {
+  try {
+    const user = await userModel.create(body);
+    return user;
+  } catch (error) {
+    console.error("Der skete en fejl", error);
+    throw new Error("Der skete en fejl", error);
+  }
+};
 
 // Tilføj svar på et quiz-spørgsmå
 export const addAnswer = async (req, res) => {
