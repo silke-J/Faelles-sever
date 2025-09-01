@@ -8,6 +8,7 @@ import dbConnect from "./util/dbconnect.js";
 
 import quizRoute from "./routes/quiz.routes.js";
 import userRoute from "./routes/user.routes.js";
+import answerRoute from "./routes/answer.routes.js";
 
 // MongoDB
 dbConnect();
@@ -24,6 +25,7 @@ expressServer.use(express.json());
 // Routes
 expressServer.use(quizRoute);
 expressServer.use(userRoute);
+expressServer.use(answerRoute);
 
 //Starter serveren
 expressServer.listen(3000, () => {

@@ -5,8 +5,8 @@ import {
   createQuiz,
   getQuizById,
   getAllQuizzes,
-  checkAnswer,
 } from "../handlers/quiz.handler.js";
+import mongoose from "mongoose";
 
 const quizRoute = express.Router();
 
@@ -57,32 +57,43 @@ quizRoute.get("/quiz/:id", async (req, res) => {
 // Create Quiz
 quizRoute.post("/quiz", upload.single("image"), async (req, res) => {
   try {
-    const { question, options, correctAnswer, nextHint } = req.body;
+    let { question, options, correctAnswer, correctOptionId, image } = req.body;
 
-    const quiz = {
-      question,
-      options,
-      correctAnswer,
-      nextHint,
-    };
+    // Opret options med id'er til quiz
+    const optionDocs = options.map((t) => ({
+      _id: new mongoose.Types.ObjectId(),
+      text: String(t).trim(),
+      votes: 0,
+    }));
 
-    if (req.file) {
-      quiz.image = process.env.SERVER_HOST + "/quiz/" + req.file.filename;
+    // Accepter både optionId og tekst
+    let correctId = correctOptionId;
+
+    if (!correctId && correctAnswer) {
+      const needle = String(correctAnswer).trim().toLowerCase();
+      const hit = optionDocs.find((o) => o.text.toLowerCase() === needle);
+      if (hit) correctId = hit._id;
     }
 
-    const result = await createQuiz(quiz);
+    if (!correctId) {
+      return res.status(400).send({
+        message:
+          "Angiv enten correctOptionId eller en correctAnswer, der matcher en option.",
+      });
+    }
 
-    return res.status(201).send({
-      status: "Oprettet",
-      message: "Quiz oprettet",
-      data: result,
+    // Opret quiz med options
+    const quiz = await createQuiz({
+      question: String(question).trim(),
+      options: optionDocs,
+      correctOptionId: correctId,
+      ...(image ? { image } : {}),
     });
-  } catch (error) {
-    console.error("Server-fejl:", error);
-    return res.status(500).send({
-      status: "error",
-      message: error.message,
-    });
+
+    return res.status(201).send({ status: "ok", data: quiz });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send({ message: "Internal server error" });
   }
 });
 

@@ -1,10 +1,31 @@
 import userModel from "../models/user.model.js";
 import quizModel from "../models/quiz.model.js";
 
+// Get users
+export const getUsers = async () => {
+  try {
+    const users = await userModel.find({}).select("-password -__v");
+
+    return {
+      status: "ok",
+      message: "Users fetched successfully",
+      data: users,
+    };
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return {
+      status: "error",
+      message: "An error occurred while fetching users",
+      data: [],
+      error: error.message,
+    };
+  }
+};
+
 // Get User by id
 export const getUserById = async (id) => {
   try {
-    const user = userModel.findById(id).populate("answers.questionId");
+    const user = userModel.findById(id);
     return user;
   } catch (error) {
     console.error("Der skete en fejl", error);
