@@ -66,25 +66,27 @@ userRoute.post("/user", async (req, res) => {
   }
 });
 
-// Answered quiz-question
-userRoute.put("/user/:id/answer", async (req, res) => {
-  try {
-    console.log(req.body);
-    const { quiz, chosenAnswer } = req.body;
-    const result = await answerQuizQuestion(req.params.id, quiz, chosenAnswer);
+// I stedet for denne, er der oprettet en answer model/route/handler for at splitte koden og logikken lidt mere op
 
-    return res.status(200).send({
-      status: "ok",
-      message: "Svar gemt",
-      data: result,
-    });
-  } catch (error) {
-    console.error("Server-fejl", error);
-    return res.status(500).send({
-      status: "error",
-      message: error.message,
-    });
-  }
-});
+// Answered quiz-question
+// userRoute.put("/user/:id/answer", async (req, res) => {
+//   try {
+//     console.log(req.body);
+//     const { quiz, chosenAnswer } = req.body;
+//     const result = await answerQuizQuestion(req.params.id, quiz, chosenAnswer);
+
+//     return res.status(200).send({
+//       status: "ok",
+//       message: "Svar gemt",
+//       data: result,
+//     });
+//   } catch (error) {
+//     console.error("Server-fejl", error);
+//     return res.status(500).send({
+//       status: "error",
+//       message: error.message,
+//     });
+//   }
+// });
 
 export default userRoute;

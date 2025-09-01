@@ -97,6 +97,8 @@ quizRoute.post("/quiz", upload.single("image"), async (req, res) => {
   }
 });
 
+// Denne check-route er måske ikke længere så nødvendig pga den nye answer logik
+
 // Check if answer is correct
 quizRoute.post("/quiz/:id/check", async (req, res) => {
   try {

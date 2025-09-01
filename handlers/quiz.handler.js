@@ -33,6 +33,8 @@ export const createQuiz = async (body) => {
   }
 };
 
+// Denne checkAnswer funktion er måske ikke længere så nødvendig pga den nye answer logik
+
 // Check if answer is correct
 export const checkAnswer = async (quizId, choosenAnswer) => {
   try {

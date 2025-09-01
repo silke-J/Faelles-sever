@@ -44,32 +44,34 @@ export const createUser = async (body) => {
   }
 };
 
-// Answered quiz-question
-export const answerQuizQuestion = async (userId, quizId, chosenAnswer) => {
-  try {
-    console.log(quizId);
+// I stedet for denne, er der oprettet en answer model/route/handler for at splitte koden og logikken lidt mere op
 
-    const quiz = await quizModel.findById(quizId);
-    if (!quiz) throw new Error("Quiz ikke fundet");
+// // Answered quiz-question
+// export const answerQuizQuestion = async (userId, quizId, chosenAnswer) => {
+//   try {
+//     console.log(quizId);
 
-    const correct = quiz.correctAnswer === chosenAnswer;
+//     const quiz = await quizModel.findById(quizId);
+//     if (!quiz) throw new Error("Quiz ikke fundet");
 
-    const user = await userModel.findById(userId);
-    if (!user) throw new Error("User ikke fundet");
+//     const correct = quiz.correctAnswer === chosenAnswer;
 
-    /*  user.quiz.push({
-      quiz: quiz,
-      chosenAnswer,
-      correct,
-    }); */
+//     const user = await userModel.findById(userId);
+//     if (!user) throw new Error("User ikke fundet");
 
-    if (correct) {
-      user.correctAnswerCount += 1;
-    }
+//     /*  user.quiz.push({
+//       quiz: quiz,
+//       chosenAnswer,
+//       correct,
+//     }); */
 
-    await user.save();
-  } catch (error) {
-    console.error("Fejl i answerQuizQuestion", error);
-    throw error;
-  }
-};
+//     if (correct) {
+//       user.correctAnswerCount += 1;
+//     }
+
+//     await user.save();
+//   } catch (error) {
+//     console.error("Fejl i answerQuizQuestion", error);
+//     throw error;
+//   }
+// };
