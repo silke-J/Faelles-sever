@@ -24,9 +24,11 @@ export const createUser = async (body) => {
 };
 
 // Answered quiz-question
-export const answerQuizQuestion = async (userId, questionId, chosenAnswer) => {
+export const answerQuizQuestion = async (userId, quizId, chosenAnswer) => {
   try {
-    const quiz = await quizModel.findById(questionId);
+    console.log(quizId);
+
+    const quiz = await quizModel.findById(quizId);
     if (!quiz) throw new Error("Quiz ikke fundet");
 
     const correct = quiz.correctAnswer === chosenAnswer;
@@ -34,11 +36,11 @@ export const answerQuizQuestion = async (userId, questionId, chosenAnswer) => {
     const user = await userModel.findById(userId);
     if (!user) throw new Error("User ikke fundet");
 
-    user.answers.push({
-      questionId,
+    /*  user.quiz.push({
+      quiz: quiz,
       chosenAnswer,
       correct,
-    });
+    }); */
 
     if (correct) {
       user.correctAnswerCount += 1;

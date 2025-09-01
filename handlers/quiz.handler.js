@@ -14,7 +14,7 @@ export const getAllQuizzes = async () => {
 // Get Quiz by id
 export const getQuizById = async (id) => {
   try {
-    const quiz = await quizModel.findById(id);
+    const quiz = await quizModel.findById(id).populate("quiz");
     return quiz;
   } catch (error) {
     console.error("Der skete en fejl", error);

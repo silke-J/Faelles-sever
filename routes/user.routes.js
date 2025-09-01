@@ -46,14 +46,11 @@ userRoute.post("/user", async (req, res) => {
 });
 
 // Answered quiz-question
-userRoute.post("/user/:id/answer", async (req, res) => {
+userRoute.put("/user/:id/answer", async (req, res) => {
   try {
-    const { questionId, chosenAnswer } = req.body;
-    const result = await answerQuizQuestion(
-      req.params.id,
-      questionId,
-      chosenAnswer
-    );
+    console.log(req.body);
+    const { quiz, chosenAnswer } = req.body;
+    const result = await answerQuizQuestion(req.params.id, quiz, chosenAnswer);
 
     return res.status(200).send({
       status: "ok",
