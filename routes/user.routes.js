@@ -2,9 +2,10 @@ import express from "express";
 import {
   createUser,
   getUserById,
-  answerQuizQuestion,
+  /* answerQuizQuestion, */
   getUsers,
 } from "../handlers/user.handler.js";
+import userModel from "../models/user.model.js";
 
 const userRoute = express.Router();
 
@@ -49,6 +50,17 @@ userRoute.get("/user/:id", async (req, res) => {
 userRoute.post("/user", async (req, res) => {
   try {
     const { name } = req.body;
+
+    if (!name || name.trim() === "") {
+      return res.status(400).json({ error: "Navn er påkrævet" });
+    }
+
+    const existingUser = await userModel.findOne({ name });
+    if (existingUser) {
+      return res
+        .status(409)
+        .json({ error: "En bruger med det navn findes allerede" });
+    }
 
     const result = await createUser({ name });
 
