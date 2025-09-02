@@ -57,7 +57,7 @@ quizRoute.get("/quiz/:id", async (req, res) => {
 // Create Quiz
 quizRoute.post("/quiz", upload.single("image"), async (req, res) => {
   try {
-    let { question, options, correctAnswer, correctOptionId, image } = req.body;
+    let { question, options, correctAnswer, correctOptionId, image, hint } = req.body;
 
     // Opret options med id'er til quiz
     const optionDocs = options.map((t) => ({
@@ -88,6 +88,7 @@ quizRoute.post("/quiz", upload.single("image"), async (req, res) => {
       options: optionDocs,
       correctOptionId: correctId,
       ...(image ? { image } : {}),
+      ...(hint ? { hint } : {})
     });
 
     return res.status(201).send({ status: "ok", data: quiz });

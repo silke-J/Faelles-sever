@@ -17,6 +17,7 @@ const quizSchema = new Schema(
     correctOptionId: { type: Schema.Types.ObjectId, required: true },
     correctCount: { type: Number, default: 0 },
     image: { type: String, default: null },
+    hint: { type: String, default: null }
   },
   { timestamps: true }
 );
