@@ -36,7 +36,7 @@ export const createQuiz = async (body) => {
 // Denne checkAnswer funktion er måske ikke længere så nødvendig pga den nye answer logik
 
 // Check if answer is correct
-export const checkAnswer = async (quizId, choosenAnswer) => {
+/* export const checkAnswer = async (quizId, choosenAnswer) => {
   try {
     const quiz = await quizModel.findById(quizId);
     if (!quiz) throw new Error("Quiz ikke fundet");
@@ -47,4 +47,4 @@ export const checkAnswer = async (quizId, choosenAnswer) => {
     console.error("Der skete en fejl", error);
     throw new Error("Der skete en fejl", error);
   }
-};
+}; */
